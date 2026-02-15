@@ -576,4 +576,106 @@ router.post(
   }
 );
 
+// [Low-level Permission]
+// Setup Minecraft tunnel (EULA + RCON configuration)
+router.post(
+  "/setup_tunnel",
+  permission({ level: ROLE.USER }),
+  validator({ query: { daemonId: String, uuid: String } }),
+  async (ctx) => {
+    try {
+      const daemonId = String(ctx.query.daemonId);
+      const instanceUuid = String(ctx.query.uuid);
+      const remoteService = RemoteServiceSubsystem.getInstance(daemonId);
+      const result = await new RemoteRequest(remoteService).request("instance/setup_tunnel", {
+        instanceUuid
+      });
+      operationLogger.log("instance_config_change", {
+        daemon_id: daemonId,
+        instance_id: instanceUuid,
+        operator_ip: ctx.ip,
+        operator_name: ctx.session?.["userName"]
+      });
+      ctx.body = result;
+    } catch (err) {
+      ctx.body = err;
+    }
+  }
+);
+
+// [Low-level Permission]
+// Start tunnel manager
+router.post(
+  "/start_tunnel",
+  permission({ level: ROLE.USER }),
+  validator({ query: { daemonId: String, uuid: String } }),
+  async (ctx) => {
+    try {
+      const daemonId = String(ctx.query.daemonId);
+      const instanceUuid = String(ctx.query.uuid);
+      const remoteService = RemoteServiceSubsystem.getInstance(daemonId);
+      const result = await new RemoteRequest(remoteService).request("instance/start_tunnel", {
+        instanceUuid
+      });
+      operationLogger.log("instance_config_change", {
+        daemon_id: daemonId,
+        instance_id: instanceUuid,
+        operator_ip: ctx.ip,
+        operator_name: ctx.session?.["userName"]
+      });
+      ctx.body = result;
+    } catch (err) {
+      ctx.body = err;
+    }
+  }
+);
+
+// [Low-level Permission]
+// Get tunnel logs
+router.get(
+  "/tunnel_logs",
+  permission({ level: ROLE.USER }),
+  validator({ query: { daemonId: String, uuid: String } }),
+  async (ctx) => {
+    try {
+      const daemonId = String(ctx.query.daemonId);
+      const instanceUuid = String(ctx.query.uuid);
+      const remoteService = RemoteServiceSubsystem.getInstance(daemonId);
+      const result = await new RemoteRequest(remoteService).request("instance/get_tunnel_logs", {
+        instanceUuid
+      });
+      ctx.body = result;
+    } catch (err) {
+      ctx.body = err;
+    }
+  }
+);
+
+// [Low-level Permission]
+// Stop tunnel manager
+router.post(
+  "/stop_tunnel",
+  permission({ level: ROLE.USER }),
+  validator({ query: { daemonId: String, uuid: String } }),
+  async (ctx) => {
+    try {
+      const daemonId = String(ctx.query.daemonId);
+      const instanceUuid = String(ctx.query.uuid);
+      const remoteService = RemoteServiceSubsystem.getInstance(daemonId);
+      const result = await new RemoteRequest(remoteService).request("instance/stop_tunnel", {
+        instanceUuid
+      });
+      operationLogger.log("instance_config_change", {
+        daemon_id: daemonId,
+        instance_id: instanceUuid,
+        operator_ip: ctx.ip,
+        operator_name: ctx.session?.["userName"]
+      });
+      ctx.body = result;
+    } catch (err) {
+      ctx.body = err;
+    }
+  }
+);
+
 export default router;

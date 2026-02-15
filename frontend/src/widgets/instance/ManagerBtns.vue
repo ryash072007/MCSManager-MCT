@@ -3,9 +3,8 @@ import InnerCard from "@/components/InnerCard.vue";
 import ResponsiveLayoutGroup from "@/components/ResponsiveLayoutGroup.vue";
 import { useAppRouters } from "@/hooks/useAppRouters";
 import {
-  TYPE_MINECRAFT_JAVA,
-  TYPE_STEAM_SERVER_UNIVERSAL,
-  useInstanceInfo
+    TYPE_MINECRAFT_JAVA,
+    useInstanceInfo
 } from "@/hooks/useInstance";
 import { useServerConfig } from "@/hooks/useServerConfig";
 import { t } from "@/lang/i18n";
@@ -13,16 +12,16 @@ import { modListApi } from "@/services/apis/modManager";
 import { useAppStateStore } from "@/stores/useAppStateStore";
 import type { LayoutCard } from "@/types";
 import {
-  AppstoreAddOutlined,
-  ArrowRightOutlined,
-  BuildOutlined,
-  CodeOutlined,
-  ControlOutlined,
-  DashboardOutlined,
-  FieldTimeOutlined,
-  FolderOpenOutlined,
-  UsbOutlined,
-  UsergroupDeleteOutlined
+    AppstoreAddOutlined,
+    ArrowRightOutlined,
+    BuildOutlined,
+    CodeOutlined,
+    ControlOutlined,
+    DashboardOutlined,
+    FieldTimeOutlined,
+    FolderOpenOutlined,
+    UsbOutlined,
+    UsergroupDeleteOutlined
 } from "@ant-design/icons-vue";
 
 import { computed, ref, watch } from "vue";
@@ -179,8 +178,7 @@ const btns = computed(() => {
       click: () => {
         rconSettingsDialog.value?.openDialog();
       },
-      condition: () =>
-        instanceInfo.value?.config.type.includes(TYPE_STEAM_SERVER_UNIVERSAL) ?? false
+      condition: () => instanceInfo.value?.config.enableRcon ?? false
     },
 
     {

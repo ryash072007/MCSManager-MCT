@@ -2,19 +2,19 @@
 import { t } from "@/lang/i18n";
 import type { LayoutCard } from "@/types/index";
 import {
-  AppstoreOutlined,
-  CloseOutlined,
-  DatabaseOutlined,
-  DeleteOutlined,
-  DownOutlined,
-  FormOutlined,
-  FrownOutlined,
-  InfoCircleOutlined,
-  PauseCircleOutlined,
-  PlayCircleOutlined,
-  RedoOutlined,
-  SearchOutlined,
-  WarningOutlined
+    AppstoreOutlined,
+    CloseOutlined,
+    DatabaseOutlined,
+    DeleteOutlined,
+    DownOutlined,
+    FormOutlined,
+    FrownOutlined,
+    InfoCircleOutlined,
+    PauseCircleOutlined,
+    PlayCircleOutlined,
+    RedoOutlined,
+    SearchOutlined,
+    WarningOutlined
 } from "@ant-design/icons-vue";
 import { computed, h, onMounted, ref } from "vue";
 
@@ -24,11 +24,11 @@ import { useInstanceTagSearch, useInstanceTagTips } from "@/hooks/useInstanceTag
 import { useScreen } from "@/hooks/useScreen";
 import { remoteInstances, remoteNodeList } from "@/services/apis";
 import {
-  batchDelete,
-  batchKill,
-  batchRestart,
-  batchStart,
-  batchStop
+    batchDelete,
+    batchKill,
+    batchRestart,
+    batchStart,
+    batchStop
 } from "@/services/apis/instance";
 import { reportErrorMsg } from "@/tools/validator";
 import { INSTANCE_STATUS } from "@/types/const";
@@ -146,7 +146,8 @@ const toCreateAppPage = () => {
   router.push({
     path: "/market",
     query: {
-      daemonId: currentRemoteNode.value?.uuid
+      daemonId: currentRemoteNode.value?.uuid,
+      autoSelectMinecraft: "true"
     }
   });
 };
@@ -155,7 +156,8 @@ const toMarketPage = () => {
   router.push({
     path: "/market",
     query: {
-      daemonId: currentRemoteNode.value?.uuid
+      daemonId: currentRemoteNode.value?.uuid,
+      autoSelectMinecraft: "true"
     }
   });
 };

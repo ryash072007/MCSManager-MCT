@@ -1,19 +1,21 @@
 import fs from "fs-extra";
 import path from "path";
+import StorageSubsystem from "../common/system_storage";
 import Instance from "../entity/instance/instance";
 import { $t } from "../i18n";
 import logger from "../service/log";
 import * as protocol from "../service/protocol";
 import { routerApp } from "../service/router";
 import InstanceSubsystem from "../service/system_instance";
+import tunnelManager from "../service/tunnel_manager";
 
 import { arrayUnique, toNumber } from "mcsmanager-common";
 import ProcessInfoCommand from "../entity/commands/process_info";
 import { ProcessConfig } from "../entity/instance/process_config";
 import { TaskCenter } from "../service/async_task_service";
 import {
-  createQuickInstallTask,
-  QuickInstallTask
+    createQuickInstallTask,
+    QuickInstallTask
 } from "../service/async_task_service/quick_install";
 import downloadManager from "../service/download_manager";
 import { IInstanceDetail, IJson } from "../service/interfaces";
@@ -649,5 +651,180 @@ routerApp.on("instance/mods/config_files", async (ctx, data) => {
     protocol.response(ctx, files);
   } catch (err: any) {
     protocol.responseError(ctx, err, { disablePrint: true });
+  }
+});
+
+// Setup Minecraft tunnel with auto-configuration
+routerApp.on("instance/setup_tunnel", async (ctx, data) => {
+  const { instanceUuid } = data;
+  try {
+    const instance = InstanceSubsystem.getInstance(instanceUuid);
+    if (!instance) throw new Error("Instance not found");
+
+    const instancePath = instance.absoluteCwdPath();
+    
+    // 1. Accept EULA
+    const eulaPath = path.join(instancePath, "eula.txt");
+    const eulaContent = "#By changing the setting below to TRUE you are indicating your agreement to our EULA (https://aka.ms/MinecraftEULA).\neula=true\n";
+    await fs.writeFile(eulaPath, eulaContent, "utf-8");
+    logger.info(`[Tunnel Setup] Accepted EULA for instance ${instanceUuid}`);
+
+    // 2. Modify server.properties
+    const serverPropsPath = path.join(instancePath, "server.properties");
+    let serverProps = "";
+    
+    if (await fs.pathExists(serverPropsPath)) {
+      serverProps = await fs.readFile(serverPropsPath, "utf-8");
+    }
+
+    // Parse and modify properties
+    const props: { [key: string]: string } = {};
+    serverProps.split("\n").forEach(line => {
+      if (line.trim() && !line.trim().startsWith("#")) {
+        const [key, ...valueParts] = line.split("=");
+        if (key) {
+          props[key.trim()] = valueParts.join("=").trim();
+        }
+      }
+    });
+
+    // Set required properties
+    props["online-mode"] = "false";
+    props["allow-transfer"] = "true";
+    props["enable-rcon"] = "true";
+    props["rcon.password"] = "12345678";
+    props["rcon.port"] = "25575";
+
+    // Write back server.properties
+    let newServerProps = "#Minecraft server properties\n";
+    for (const [key, value] of Object.entries(props)) {
+      newServerProps += `${key}=${value}\n`;
+    }
+    await fs.writeFile(serverPropsPath, newServerProps, "utf-8");
+    logger.info(`[Tunnel Setup] Updated server.properties for instance ${instanceUuid}`);
+
+    // 3. Update instance config
+    instance.config.enableRcon = true;
+    instance.config.rconPassword = "12345678";
+    instance.config.rconPort = 25575;
+    instance.config.rconIp = "127.0.0.1";
+    
+    StorageSubsystem.store("InstanceConfig", instanceUuid, instance.config);
+    logger.info(`[Tunnel Setup] Updated instance config for ${instanceUuid}`);
+
+    protocol.response(ctx, {
+      success: true,
+      message: "Minecraft server configured successfully. EULA accepted, RCON enabled, and ready for tunnel setup."
+    });
+  } catch (err: any) {
+    logger.error(`[Tunnel Setup] Error: ${err.message}`);
+    protocol.responseError(ctx, err);
+  }
+});
+
+// Start tunnel manager
+routerApp.on("instance/start_tunnel", async (ctx, data) => {
+  const { instanceUuid } = data;
+  try {
+    const instance = InstanceSubsystem.getInstance(instanceUuid);
+    if (!instance) throw new Error("Instance not found");
+
+    // Check if RCON is enabled
+    if (!instance.config.enableRcon) {
+      throw new Error("RCON must be enabled before starting tunnel. Please run server setup first.");
+    }
+
+    // Try to read actual port from server.properties
+    let port = instance.config.basePort || 25565;
+    let rconPort = instance.config.rconPort || 25575;
+    const serverPropertiesPath = path.join(instance.absoluteCwdPath(), "server.properties");
+    if (fs.existsSync(serverPropertiesPath)) {
+      try {
+        const content = await fs.readFile(serverPropertiesPath, "utf-8");
+        const portMatch = content.match(/^server-port=(\d+)/m);
+        const rconPortMatch = content.match(/^rcon\.port=(\d+)/m);
+        
+        if (portMatch) {
+          port = parseInt(portMatch[1]);
+          logger.info(`[Tunnel] Using server port from server.properties: ${port}`);
+        }
+        if (rconPortMatch) {
+          rconPort = parseInt(rconPortMatch[1]);
+          logger.info(`[Tunnel] Using RCON port from server.properties: ${rconPort}`);
+        }
+      } catch (err) {
+        logger.warn(`[Tunnel] Could not read server.properties, using config values`);
+      }
+    }
+
+    const rconPassword = instance.config.rconPassword || "12345678";
+
+    // Start tunnel using the tunnel manager service
+    const tunnelUrl = await tunnelManager.startTunnel(
+      instanceUuid,
+      port,
+      rconPort,
+      rconPassword,
+      50 // Rotation interval in minutes
+    );
+
+    logger.info(`[Tunnel] Started tunnel for instance ${instanceUuid}: ${tunnelUrl}`);
+    
+    protocol.response(ctx, { 
+      success: true, 
+      tunnelUrl: tunnelUrl,
+      message: "Tunnel started successfully!"
+    });
+  } catch (err: any) {
+    logger.error(`[Tunnel] Error starting tunnel: ${err.message}`);
+    protocol.responseError(ctx, err);
+  }
+});
+
+// Get tunnel status (replaces get_tunnel_logs)
+routerApp.on("instance/get_tunnel_logs", async (ctx, data) => {
+  const { instanceUuid } = data;
+  try {
+    const instance = InstanceSubsystem.getInstance(instanceUuid);
+    if (!instance) throw new Error("Instance not found");
+
+    const isActive = tunnelManager.isTunnelActive(instanceUuid);
+    const tunnelUrl = instance.config.extraServiceConfig.tunnelUrl || "";
+    
+    let logs = "";
+    if (isActive) {
+      logs = `Tunnel Status: Active\nCurrent URL: ${tunnelUrl}\n\nTunnel is running and will rotate automatically every 50 minutes.\nPlayers will be transferred automatically when the tunnel rotates.`;
+    } else {
+      logs = "Tunnel Status: Inactive\n\nNo tunnel is currently running for this instance.";
+    }
+    
+    protocol.response(ctx, { logs: logs, tunnelUrl: tunnelUrl });
+  } catch (err: any) {
+    logger.error(`[Tunnel] Error getting tunnel status: ${err.message}`);
+    protocol.responseError(ctx, err);
+  }
+});
+
+// Stop tunnel manager
+routerApp.on("instance/stop_tunnel", async (ctx, data) => {
+  const { instanceUuid } = data;
+  try {
+    const instance = InstanceSubsystem.getInstance(instanceUuid);
+    if (!instance) throw new Error("Instance not found");
+
+    if (!tunnelManager.isTunnelActive(instanceUuid)) {
+      // Clear config even if tunnel is not active (e.g., after daemon restart)
+      instance.config.extraServiceConfig.tunnelUrl = "";
+      instance.config.extraServiceConfig.tunnelPid = 0;
+      StorageSubsystem.store("InstanceConfig", instanceUuid, instance.config);
+      throw new Error("No tunnel is running for this instance.");
+    }
+
+    await tunnelManager.stopTunnel(instanceUuid);
+    
+    protocol.response(ctx, { success: true, message: "Tunnel stopped successfully." });
+  } catch (err: any) {
+    logger.error(`[Tunnel] Error stopping tunnel: ${err.message}`);
+    protocol.responseError(ctx, err);
   }
 });

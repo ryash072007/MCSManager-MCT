@@ -6,7 +6,6 @@ import { configureEntityParams } from "mcsmanager-common";
 import path from "path";
 import { CircularBuffer } from "../../common/string_cache";
 import StorageSubsystem from "../../common/system_storage";
-import { STEAM_CMD_PATH } from "../../const";
 import { $t } from "../../i18n";
 import javaManager from "../../service/java_manager";
 import logger from "../../service/log";
@@ -70,7 +69,6 @@ export default class Instance extends EventEmitter {
   public static readonly STATUS_STARTING = 2;
   public static readonly STATUS_RUNNING = 3;
 
-  public static readonly TYPE_UNIVERSAL = "universal";
   public static readonly TYPE_MINECRAFT_JAVA = "minecraft/java";
   public static readonly TYPE_MINECRAFT_BEDROCK = "minecraft/bedrock";
 
@@ -307,7 +305,7 @@ export default class Instance extends EventEmitter {
       this.config.updateCommand = "";
       this.config.startCommand = "";
       this.config.stopCommand = "^C";
-      this.config.type = Instance.TYPE_UNIVERSAL;
+      this.config.type = Instance.TYPE_MINECRAFT_JAVA;
     }
 
     this.config.docker = newDockerCfg;
@@ -519,7 +517,6 @@ export default class Instance extends EventEmitter {
     text = text.replace(/\{mcsm_uuid\}/gim, this.instanceUuid);
     text = text.replace(/\{mcsm_random\}/gim, randomUUID());
     text = text.replace(/\{mcsm_run_as\}/gim, this.config.runAs);
-    text = text.replace(/\{mcsm_steamcmd\}/gim, STEAM_CMD_PATH);
     text = text.replace(/\{mcsm_instance_id\}/gim, this.instanceUuid);
     text = text.replace(/\{mcsm_instance_name\}/gim, this.config.nickname);
     text = text.replace(/\{mcsm_instance_base_port\}/gim, String(this.config.basePort));

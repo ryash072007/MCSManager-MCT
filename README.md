@@ -28,9 +28,9 @@
 
 ## What is this?
 
-**MCSManager Panel** (or simply **MCSM Panel**) is a fast-deploying, distributed, multi-user, and modern web-based management panel for **`Minecraft`**, **`Steam`**, and other game servers.
+**MCSManager Panel** (or simply **MCSM Panel**) is a fast-deploying, distributed, multi-user, and modern web-based management panel for **`Minecraft`** servers.
 
-MCSManager has gained popularity within the **`Minecraft`** and **`Steam`** gaming communities. It enables you to manage multiple physical or virtual servers from a single platform, and offers a **secure**, **reliable**, and **granular multi-user permission system**. The MCSM Panel continues to support server administrators, operators, and independent developers, managing servers like **`Minecraft`**, **`Terraria`**, and other **`Steam`**-based games for them.
+MCSManager has gained popularity within the **`Minecraft`** gaming community. It enables you to manage multiple physical or virtual servers from a single platform, and offers a **secure**, **reliable**, and **granular multi-user permission system**. The MCSM Panel continues to support server administrators, operators, and independent developers, managing **`Minecraft`** servers for them.
 
 MCSM also has **commercial applications** in mind, such as private server hosting and sales by **IDC service providers**. Several small and medium-sized enterprises already use the panel as a combined **server management** and **sales platform**. In addition, it supports **multi-language environments**, making it accessible to users across different countries and regions.
 
@@ -46,8 +46,8 @@ MCSM also has **commercial applications** in mind, such as private server hostin
 
 ## Features
 
-1. One-click deployment of **`Minecraft`** or **`Steam`** game servers via the built-in application marketplace.
-2. Compatible with most **`Steam`**-based game servers, including **`Palworld`**, **`Squad`**, **`Project Zomboid`**, **`Terraria`**, and more.
+1. One-click deployment of **`Minecraft`** servers via the built-in application marketplace.
+2. Support for both **`Minecraft Java Edition`** and **`Minecraft Bedrock Edition`** servers.
 3. Customizable web interface with drag-and-drop card layout to build your ideal dashboard.
 4. Full **Docker Hub** image support, with built-in multi-user access and support for commercial instance hosting services.
 5. Distributed architecture, managing multiple machines from a single web panel.
@@ -225,11 +225,11 @@ services:
 Note (Rootless Docker on Linux): the daemon supports `DOCKER_HOST`. If your Docker daemon runs in rootless mode, the socket is usually at `/run/user/<uid>/docker.sock` instead of `/var/run/docker.sock`. In that case, replace the default socket mount with the rootless socket and set `DOCKER_HOST`, for example:
 
 ```yml
-  daemon:
-    environment:
-      - DOCKER_HOST=unix:///run/user/1000/docker.sock
-    volumes:
-      - /run/user/1000/docker.sock:/run/user/1000/docker.sock
+daemon:
+  environment:
+    - DOCKER_HOST=unix:///run/user/1000/docker.sock
+  volumes:
+    - /run/user/1000/docker.sock:/run/user/1000/docker.sock
 ```
 
 Replace `1000` with your actual UID (`id -u`).

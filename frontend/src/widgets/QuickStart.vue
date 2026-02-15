@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import ActionButton from "@/components/ActionButton.vue";
+import FadeUpAnimation from "@/components/FadeUpAnimation.vue";
+import { router } from "@/config/router";
+import { QUICKSTART_ACTION_TYPE } from "@/hooks/widgets/quickStartFlow";
 import { t } from "@/lang/i18n";
 import type { LayoutCard } from "@/types";
-import { router } from "@/config/router";
-import { BuildFilled, DropboxSquareFilled, SwitcherFilled } from "@ant-design/icons-vue";
-import { QUICKSTART_ACTION_TYPE } from "@/hooks/widgets/quickStartFlow";
-import FadeUpAnimation from "@/components/FadeUpAnimation.vue";
+import { BuildFilled, DropboxSquareFilled } from "@ant-design/icons-vue";
 
 defineProps<{
   card: LayoutCard;
@@ -25,25 +25,13 @@ const actions = [
     }
   },
   {
-    icon: SwitcherFilled,
-    title: t("TXT_CODE_46bb965"),
-    click: () => {
-      router.push({
-        path: "/quickstart",
-        query: {
-          appType: QUICKSTART_ACTION_TYPE.SteamGameServer
-        }
-      });
-    }
-  },
-  {
     icon: DropboxSquareFilled,
-    title: t("TXT_CODE_2ab3e9fd"),
+    title: t("TXT_CODE_c8261c85"),
     click: () => {
       router.push({
         path: "/quickstart",
         query: {
-          appType: QUICKSTART_ACTION_TYPE.AnyApp
+          appType: QUICKSTART_ACTION_TYPE.Bedrock
         }
       });
     }

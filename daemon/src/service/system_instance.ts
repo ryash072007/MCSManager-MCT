@@ -116,7 +116,7 @@ class InstanceSubsystem extends EventEmitter {
       globalConfig.stopCommand = "^c";
       globalConfig.ie = "utf-8";
       globalConfig.oe = "utf-8";
-      globalConfig.type = Instance.TYPE_UNIVERSAL;
+      globalConfig.type = Instance.TYPE_MINECRAFT_JAVA;
       globalConfig.processType = "general";
 
       // save config to file

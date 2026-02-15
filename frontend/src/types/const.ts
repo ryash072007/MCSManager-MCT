@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { TYPE_UNIVERSAL } from "@/hooks/useInstance";
+import { TYPE_MINECRAFT_JAVA } from "@/hooks/useInstance";
 import { t } from "@/lang/i18n";
 import type { QuickStartPackages } from ".";
 
@@ -160,7 +160,7 @@ export const defaultInstanceInfo: IGlobalInstanceConfig = {
   oe: "UTF-8",
   createDatetime: new Date().getTime(),
   lastDatetime: 0,
-  type: TYPE_UNIVERSAL,
+  type: TYPE_MINECRAFT_JAVA,
   tag: [],
   endTime: 0,
   fileCode: "UTF-8",
@@ -172,7 +172,7 @@ export const defaultInstanceInfo: IGlobalInstanceConfig = {
   category: 0,
   basePort: undefined as any,
 
-  // Steam RCON
+  // RCON Configuration (used by Minecraft servers)
   enableRcon: false,
   rconPassword: "",
   rconPort: undefined,

@@ -3,32 +3,26 @@ import { t } from "@/lang/i18n";
 import { remoteNodeList } from "@/services/apis";
 import { arrayFilter } from "@/tools/array";
 import {
-  AppstoreAddOutlined,
-  AppstoreTwoTone,
-  CalculatorTwoTone,
-  CloudUploadOutlined,
-  CodeOutlined,
-  DatabaseTwoTone,
-  FileExcelOutlined,
-  FileZipOutlined,
-  FolderOpenOutlined,
-  HomeOutlined,
-  IdcardTwoTone,
-  NodeIndexOutlined,
-  ShoppingCartOutlined,
-  SmileTwoTone,
-  TransactionOutlined
+    AppstoreAddOutlined,
+    AppstoreTwoTone,
+    CalculatorTwoTone,
+    CloudUploadOutlined,
+    CodeOutlined,
+    DatabaseTwoTone,
+    FileExcelOutlined,
+    FileZipOutlined,
+    FolderOpenOutlined,
+    HomeOutlined,
+    IdcardTwoTone,
+    NodeIndexOutlined,
+    SmileTwoTone
 } from "@ant-design/icons-vue";
 import { computed, reactive, ref, type FunctionalComponent } from "vue";
 
 export enum QUICKSTART_ACTION_TYPE {
   Minecraft = "minecraft",
   Bedrock = "bedrock",
-  Hytale = "hytale",
-  Terraria = "terraria",
-  SteamGameServer = "steam",
-  Docker = "docker",
-  AnyApp = "universal"
+  Docker = "docker"
 }
 
 export enum QUICKSTART_METHOD {
@@ -62,27 +56,6 @@ export function useQuickStartFlow() {
       title: t("TXT_CODE_c8261c85"),
       key: QUICKSTART_ACTION_TYPE.Bedrock,
       icon: AppstoreAddOutlined
-    },
-    {
-      title: t("TXT_CODE_2025658e"),
-      key: QUICKSTART_ACTION_TYPE.Hytale,
-      icon: AppstoreAddOutlined
-    },
-    {
-      title: t("TXT_CODE_dbefcc6c"),
-      key: QUICKSTART_ACTION_TYPE.Terraria,
-      icon: AppstoreAddOutlined
-    },
-
-    {
-      title: t("TXT_CODE_dd8d27ce"),
-      key: QUICKSTART_ACTION_TYPE.SteamGameServer,
-      icon: ShoppingCartOutlined
-    },
-    {
-      title: t("TXT_CODE_e08e63b5"),
-      key: QUICKSTART_ACTION_TYPE.AnyApp,
-      icon: TransactionOutlined
     }
   ];
 

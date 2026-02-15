@@ -19,6 +19,7 @@
   "dependencies": {
     "@iarna/toml": "^2.2.5",
     "@koa/router": "^10.0.0",
+    "@pinggy/pinggy": "^0.3.4",
     "archiver": "^5.3.1",
     "axios": "^1.8.2",
     "compressing": "^1.10.0",
@@ -38,6 +39,7 @@
     "pidusage": "^2.0.21",
     "proper-lockfile": "^4.1.2",
     "properties": "^1.2.1",
+    "rcon": "^1.1.0",
     "rcon-srcds": "^2.1.0",
     "socket.io": "^4.6.1",
     "socket.io-client": "^4.7.5",

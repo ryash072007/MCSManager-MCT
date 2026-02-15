@@ -28,9 +28,9 @@
 
 ## 这是什么？
 
-**MCSManager 面板**（简称：MCSM 面板），是一个快速部署，支持分布式架构，支持多用户，简单易用和现代化的 Minecraft、Steam 和其他游戏服务器 Web 管理面板。
+**MCSManager 面板**（简称：MCSM 面板），是一个快速部署，支持分布式架构，支持多用户，简单易用和现代化的 Minecraft 服务器 Web 管理面板。
 
-MCSManager 在 `Minecraft` 和 `Steam` 游戏社区内中已有一定的流行程度，它可以帮助你集中管理多个物理服务器，实现在任何主机上创建游戏服务器，并且提供安全可靠的多用户权限系统，可以很轻松的帮助你管理多个服务器，一直在为 `Minecraft`，`Terraria` 和 `Steam` 游戏服务器的管理员，运维人员和个人开发者提供健康的软件支持。
+MCSManager 在 `Minecraft` 游戏社区内中已有一定的流行程度，它可以帮助你集中管理多个物理服务器，实现在任何主机上创建游戏服务器，并且提供安全可靠的多用户权限系统，可以很轻松的帮助你管理多个服务器，一直在为 `Minecraft` 服务器的管理员，运维人员和个人开发者提供健康的软件支持。
 
 MCSM 同样也考虑了**商业应用**，例如由 **IDC 服务提供商**进行的私有服务器托管和销售。多家中小型企业已经将此面板用作**服务器管理**和**销售平台**的结合。此外，它支持**多语言环境**，使其可供不同国家和地区的用户访问。
 
@@ -46,8 +46,8 @@ MCSM 同样也考虑了**商业应用**，例如由 **IDC 服务提供商**进�
 
 ## 功能特性
 
-1. 使用应用市场一键轻松部署 `Minecraft` 或 `Steam` 游戏服务器。
-2. 兼容大部分 `Steam` 游戏服务器，列如 `幻兽帕鲁`，`战术小队`，`僵尸毁灭工程` 和 `泰拉瑞亚` 等。
+1. 使用应用市场一键轻松部署 `Minecraft` 服务器。
+2. 支持 `Minecraft Java 版` 和 `Minecraft 基岩版` 服务器。
 3. 网页支持拖拽式的小卡片布局，打造自己喜欢的界面布局。
 4. 支持 `Docker Hub` 上的所有镜像，支持多用户，支持商业化的实例出售服务。
 5. 支持分布式，一个网页即可同时管理数台机器。
@@ -215,11 +215,11 @@ services:
 注意（Linux Rootless Docker）：Daemon 端已支持读取 `DOCKER_HOST`。如果你的 Docker 运行在 rootless 模式，socket 通常位于 `/run/user/<uid>/docker.sock`（而不是 `/var/run/docker.sock`）。此时请把默认的 socket 挂载替换为 rootless socket，并设置 `DOCKER_HOST`，例如：
 
 ```yml
-  daemon:
-    environment:
-      - DOCKER_HOST=unix:///run/user/1000/docker.sock
-    volumes:
-      - /run/user/1000/docker.sock:/run/user/1000/docker.sock
+daemon:
+  environment:
+    - DOCKER_HOST=unix:///run/user/1000/docker.sock
+  volumes:
+    - /run/user/1000/docker.sock:/run/user/1000/docker.sock
 ```
 
 把 `1000` 替换成你的实际 UID（`id -u`）。

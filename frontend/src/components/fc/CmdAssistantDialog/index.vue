@@ -1,22 +1,20 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import type { MountComponent } from "@/types";
 import ActionButton from "@/components/ActionButton.vue";
-import { t } from "@/lang/i18n";
-import { BuildFilled, DropboxSquareFilled, SwitcherFilled } from "@ant-design/icons-vue";
-import { QUICKSTART_ACTION_TYPE } from "@/hooks/widgets/quickStartFlow";
 import FadeUpAnimation from "@/components/FadeUpAnimation.vue";
 import { useStartCmdBuilder } from "@/hooks/useGenerateStartCmd";
-import { reportErrorMsg } from "@/tools/validator";
 import {
-  TYPE_MINECRAFT_BEDROCK,
-  TYPE_MINECRAFT_JAVA,
-  TYPE_STEAM_SERVER_UNIVERSAL,
-  TYPE_UNIVERSAL
+    TYPE_MINECRAFT_BEDROCK,
+    TYPE_MINECRAFT_JAVA
 } from "@/hooks/useInstance";
+import { QUICKSTART_ACTION_TYPE } from "@/hooks/widgets/quickStartFlow";
+import { t } from "@/lang/i18n";
+import { reportErrorMsg } from "@/tools/validator";
+import type { MountComponent } from "@/types";
+import { BuildFilled, DropboxSquareFilled } from "@ant-design/icons-vue";
+import type { Component } from "vue";
+import { ref } from "vue";
 import AnyAppFormComponent from "./AnyAppForm.vue";
 import MinecraftJavaForm from "./MinecraftJavaForm.vue";
-import type { Component } from "vue";
 
 const { minecraftJava, buildCmd, setGameType, gameType, appType, anyAppForm } =
   useStartCmdBuilder();
@@ -40,16 +38,6 @@ const tabFormComponent: Record<string, { component: Component; title: string; fo
   [TYPE_MINECRAFT_BEDROCK]: {
     component: AnyAppFormComponent,
     title: t("TXT_CODE_28116f29"),
-    form: anyAppForm
-  },
-  [TYPE_STEAM_SERVER_UNIVERSAL]: {
-    component: AnyAppFormComponent,
-    title: t("TXT_CODE_dd8d27ce"),
-    form: anyAppForm
-  },
-  [TYPE_UNIVERSAL]: {
-    component: AnyAppFormComponent,
-    title: t("TXT_CODE_10693964"),
     form: anyAppForm
   }
 };

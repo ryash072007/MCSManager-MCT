@@ -1,19 +1,19 @@
 <script setup lang="ts">
-import { ref, computed, unref } from "vue";
-import { t } from "@/lang/i18n";
-import { useScreen } from "@/hooks/useScreen";
-import type { InstanceDetail } from "@/types";
-import type { FormInstance } from "ant-design-vue";
-import type { Rule } from "ant-design-vue/es/form";
-import { updateInstanceConfig } from "@/services/apis/instance";
-import { message } from "ant-design-vue";
-import { reportErrorMsg } from "@/tools/validator";
-import { TERMINAL_CODE } from "@/types/const";
+import { useDockerEnvEditDialog } from "@/components/fc";
 import { INSTANCE_TYPE_TRANSLATION } from "@/hooks/useInstance";
+import { useScreen } from "@/hooks/useScreen";
+import { t } from "@/lang/i18n";
+import { updateInstanceConfig } from "@/services/apis/instance";
+import { reportErrorMsg } from "@/tools/validator";
+import type { InstanceDetail } from "@/types";
+import { TERMINAL_CODE } from "@/types/const";
+import type { FormInstance } from "ant-design-vue";
+import { message } from "ant-design-vue";
+import type { Rule } from "ant-design-vue/es/form";
 import { Dayjs } from "dayjs";
 import _ from "lodash";
+import { computed, ref, unref } from "vue";
 import { dayjsToTimestamp, timestampToDayjs } from "../../../tools/time";
-import { useDockerEnvEditDialog } from "@/components/fc";
 
 interface FormDetail extends InstanceDetail {
   dayjsEndTime?: Dayjs;
@@ -37,7 +37,7 @@ const formRef = ref<FormInstance>();
 const updateCommandDesc = t("TXT_CODE_fa487a47");
 const UPDATE_CMD_TEMPLATE =
   t("TXT_CODE_61ca492b") +
-  `"C:/SteamCMD/steamcmd.exe" +login anonymous +force_install_dir "{mcsm_workspace}" "+app_update 380870 validate" +quit`;
+  `java -jar paperclip.jar --nogui`;
 
 const initFormDetail = () => {
   if (props.instanceInfo) {

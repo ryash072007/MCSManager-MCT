@@ -16,7 +16,7 @@ export default class InstanceConfig implements IGlobalInstanceConfig {
   public oe = "utf-8";
   public createDatetime = Date.now();
   public lastDatetime = Date.now();
-  public type = Instance.TYPE_UNIVERSAL;
+  public type = Instance.TYPE_MINECRAFT_JAVA;
   public tag: string[] = [];
   public endTime: number = 0;
   public fileCode: string = "utf-8";
@@ -91,6 +91,9 @@ export default class InstanceConfig implements IGlobalInstanceConfig {
 
   public extraServiceConfig = {
     openFrpTunnelId: "",
-    openFrpToken: ""
+    openFrpToken: "",
+    tunnelUrl: "",
+    tunnelPid: 0,
+    tunnelLogPath: ""
   };
 }

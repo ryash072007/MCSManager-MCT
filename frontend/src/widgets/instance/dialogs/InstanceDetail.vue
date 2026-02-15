@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import {
-  useDockerCapabilityEditDialog,
-  useDockerDeviceEditDialog,
-  useDockerEnvEditDialog,
-  useDockerLabelEditDialog,
-  usePortEditDialog,
-  useUploadFileDialog,
-  useVolumeEditDialog
+    useDockerCapabilityEditDialog,
+    useDockerDeviceEditDialog,
+    useDockerEnvEditDialog,
+    useDockerLabelEditDialog,
+    usePortEditDialog,
+    useUploadFileDialog,
+    useVolumeEditDialog
 } from "@/components/fc";
 import { useAppRouters } from "@/hooks/useAppRouters";
 import { INSTANCE_TYPE_TRANSLATION } from "@/hooks/useInstance";
@@ -75,7 +75,7 @@ const IMAGE_DEFINE = {
 const UPDATE_CMD_DESCRIPTION = t("TXT_CODE_fa487a47");
 const UPDATE_CMD_TEMPLATE =
   t("TXT_CODE_61ca492b") +
-  '"C:/SteamCMD/steamcmd.exe" +login anonymous +force_install_dir "{mcsm_workspace}" "+app_update 380870 validate" +quit';
+  'java -jar paperclip.jar --nogui';
 
 const formType = ref<"template" | "normal">("normal");
 const isEditMode = ref(false);

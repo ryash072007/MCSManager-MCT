@@ -1,0 +1,7 @@
+# Python dependencies for MCSManager Tunnel Manager
+# Install with: pip install -r requirements.txt
+
+pinggy>=0.1.0
+mcrcon>=0.7.0
+APScheduler>=3.10.0
+requests>=2.31.0

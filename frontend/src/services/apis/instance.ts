@@ -1,11 +1,11 @@
 import { useDefineApi } from "@/stores/useDefineApi";
 import type { RemoteMappingEntry } from "@/tools/protocol";
 import type {
-  InstanceDetail,
-  JsonData,
-  NewScheduleTask,
-  QuickStartTemplate,
-  Schedule
+    InstanceDetail,
+    JsonData,
+    NewScheduleTask,
+    QuickStartTemplate,
+    Schedule
 } from "@/types";
 
 export interface MissionPassportResponse {
@@ -471,5 +471,90 @@ export const reinstallInstance = useDefineApi<
   boolean
 >({
   url: "/api/protected_instance/install_instance",
+  method: "POST"
+});
+
+export const setupInstanceTunnelApi = useDefineApi<
+  {
+    params: {
+      uuid: string;
+      daemonId: string;
+    };
+  },
+  {
+    success: boolean;
+    message: string;
+  }
+>({
+  url: "/api/protected_instance/setup_tunnel",
+  method: "POST"
+});
+
+export const updateTunnelUrl = useDefineApi<
+  {
+    params: {
+      uuid: string;
+      daemonId: string;
+    };
+    data: {
+      tunnelUrl: string;
+    };
+  },
+  {
+    success: boolean;
+    tunnelUrl: string;
+  }
+>({
+  url: "/api/protected_instance/update_tunnel_url",
+  method: "POST"
+});
+
+export const startTunnelManager = useDefineApi<
+  {
+    params: {
+      uuid: string;
+      daemonId: string;
+    };
+  },
+  {
+    success: boolean;
+    pid: number;
+    logPath: string;
+    message: string;
+  }
+>({
+  url: "/api/protected_instance/start_tunnel",
+  method: "POST"
+});
+
+export const getTunnelLogs = useDefineApi<
+  {
+    params: {
+      uuid: string;
+      daemonId: string;
+    };
+  },
+  {
+    logs: string;
+    pid?: number;
+  }
+>({
+  url: "/api/protected_instance/tunnel_logs",
+  method: "GET"
+});
+
+export const stopTunnelManager = useDefineApi<
+  {
+    params: {
+      uuid: string;
+      daemonId: string;
+    };
+  },
+  {
+    success: boolean;
+    message: string;
+  }
+>({
+  url: "/api/protected_instance/stop_tunnel",
   method: "POST"
 });

@@ -1,6 +1,6 @@
 import { ref } from "vue";
+import { TYPE_MINECRAFT_JAVA } from "./useInstance";
 import { QUICKSTART_ACTION_TYPE } from "./widgets/quickStartFlow";
-import { TYPE_MINECRAFT_JAVA, TYPE_STEAM_SERVER_UNIVERSAL, TYPE_UNIVERSAL } from "./useInstance";
 
 type SystemType = "win32" | "linux";
 
@@ -42,10 +42,8 @@ export function useStartCmdBuilder() {
     if (type === QUICKSTART_ACTION_TYPE.Minecraft) {
       return setAppType(TYPE_MINECRAFT_JAVA);
     }
-    if (type === QUICKSTART_ACTION_TYPE.SteamGameServer) {
-      return setAppType(TYPE_STEAM_SERVER_UNIVERSAL);
-    }
-    setAppType(TYPE_UNIVERSAL);
+    // Default to Minecraft Java for any type
+    setAppType(TYPE_MINECRAFT_JAVA);
   };
 
   const buildCmd = () => {

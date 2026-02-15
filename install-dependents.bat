@@ -22,6 +22,21 @@ cd ../panel
 call npm install
 cd ../frontend
 call npm install
+
+echo.
+echo Installing Python dependencies for tunnel manager...
+cd ..
+python --version >nul 2>&1
+if errorlevel 1 (
+    echo Warning: Python not found! Skipping tunnel manager dependencies.
+    echo Please install Python 3.7+ to use the tunnel manager feature.
+) else (
+    python -m pip install --upgrade pip
+    python -m pip install -r requirements.txt
+    echo Python dependencies installed successfully!
+)
+
+echo.
 echo All dependencies installed! Use .\npm-dev-windows.bat to start the development environment.
 
 pause

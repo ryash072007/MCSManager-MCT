@@ -9,10 +9,10 @@ import { parseForwardAddress } from "@/tools/protocol";
 import { reportErrorMsg } from "@/tools/validator";
 import { defaultInstanceInfo } from "@/types/const";
 import {
-  CheckOutlined,
-  CloseOutlined,
-  InfoCircleOutlined,
-  UploadOutlined
+    CheckOutlined,
+    CloseOutlined,
+    InfoCircleOutlined,
+    UploadOutlined
 } from "@ant-design/icons-vue";
 import type { FormInstance } from "ant-design-vue";
 import { message, Modal, type UploadProps } from "ant-design-vue";
@@ -47,17 +47,6 @@ function changeInstanceType(appType: string) {
 
   if (appType.includes(QUICKSTART_ACTION_TYPE.Bedrock)) {
     formData.stopCommand = "stop";
-  }
-
-  if (appType.includes(QUICKSTART_ACTION_TYPE.Terraria)) {
-    formData.stopCommand = "stop";
-  }
-
-  if (
-    appType.includes(QUICKSTART_ACTION_TYPE.SteamGameServer) ||
-    appType.includes(QUICKSTART_ACTION_TYPE.AnyApp)
-  ) {
-    formData.stopCommand = "^c";
   }
 }
 

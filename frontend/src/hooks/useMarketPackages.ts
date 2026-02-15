@@ -240,8 +240,16 @@ export function useMarketPackages(options: UseMarketPackagesOptions = {}) {
     try {
       const list = await getQuickInstallListAddr();
       languageOptions.value = list.value?.languages || [];
-      packages.value = list.value?.packages || [];
-      if (!list.value?.packages || list.value?.packages.length === 0) {
+      // Filter packages to only include Minecraft-related games
+      const allPackages = list.value?.packages || [];
+      packages.value = allPackages.filter((pkg) => 
+        pkg.gameType && (
+          pkg.gameType.toLowerCase().includes('minecraft') ||
+          pkg.gameType === 'Minecraft Java Edition' ||
+          pkg.gameType === 'Minecraft Bedrock Edition'
+        )
+      );
+      if (!packages.value || packages.value.length === 0) {
         Modal.error({
           title: t("TXT_CODE_c534ca49"),
           content: t("TXT_CODE_bcfaf14d")

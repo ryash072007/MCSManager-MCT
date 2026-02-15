@@ -45,8 +45,20 @@ const openEditor = () => {
   router.push("/market/editor");
 };
 
-onMounted(() => {
-  fetchTemplate();
+onMounted(async () => {
+  await fetchTemplate();
+  
+  // Auto-select first Minecraft game type if query parameter is present
+  const autoSelect = router.currentRoute.value.query.autoSelectMinecraft;
+  if (autoSelect === "true" && appGameTypeList.value.length > 0) {
+    // Find the first Minecraft game type (skip "ALL" option)
+    const minecraftType = appGameTypeList.value.find(
+      (item) => item.value !== 'ALL' && item.value.toLowerCase().includes('minecraft')
+    );
+    if (minecraftType) {
+      searchForm.gameType = minecraftType.value;
+    }
+  }
 });
 
 defineExpose({

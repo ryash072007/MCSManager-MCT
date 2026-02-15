@@ -6,9 +6,6 @@ import { INSTANCE_STATUS, INSTANCE_STATUS_CODE } from "@/types/const";
 import { message, Modal } from "ant-design-vue";
 import { computed, h, onMounted, onUnmounted, ref, type Ref } from "vue";
 
-export const TYPE_UNIVERSAL = "universal";
-export const TYPE_WEB_SHELL = "universal/web_shell";
-export const TYPE_MINECRAFT_MCDR = "universal/mcdr";
 export const TYPE_MINECRAFT_JAVA = "minecraft/java";
 export const TYPE_MINECRAFT_BUKKIT = "minecraft/java/bukkit";
 export const TYPE_MINECRAFT_SPIGOT = "minecraft/java/spigot";
@@ -28,13 +25,8 @@ export const TYPE_MINECRAFT_PURPUR = "minecraft/java/purpur";
 export const TYPE_MINECRAFT_BEDROCK = "minecraft/bedrock";
 export const TYPE_MINECRAFT_BDS = "minecraft/bedrock/bds";
 export const TYPE_MINECRAFT_NUKKIT = "minecraft/bedrock/nukkit";
-export const TYPE_HYTALE = "hytale";
-export const TYPE_STEAM_SERVER_UNIVERSAL = "steam/universal";
-export const TYPE_TERRARIA = "steam/terraria";
 
 export const INSTANCE_TYPE_TRANSLATION: MapData<string> = {
-  [TYPE_UNIVERSAL]: t("TXT_CODE_a92a4aa1"),
-  [TYPE_STEAM_SERVER_UNIVERSAL]: t("TXT_CODE_3d7fbe30"),
   [TYPE_MINECRAFT_JAVA]: t("TXT_CODE_97f779b3"),
   [TYPE_MINECRAFT_BEDROCK]: t("TXT_CODE_7f1aef9f"),
   [TYPE_MINECRAFT_NUKKIT]: t("TXT_CODE_8f3e5807"),
@@ -53,11 +45,7 @@ export const INSTANCE_TYPE_TRANSLATION: MapData<string> = {
   [TYPE_MINECRAFT_MOHIST]: t("TXT_CODE_82e624d1"),
   [TYPE_MINECRAFT_FABRIC]: t("TXT_CODE_7af6d85a"),
   [TYPE_MINECRAFT_BUKKIT]: t("TXT_CODE_992bf9bc"),
-  [TYPE_MINECRAFT_GEYSER]: t("TXT_CODE_4f57868"),
-  [TYPE_MINECRAFT_MCDR]: t("TXT_CODE_fa6f95a1"),
-  [TYPE_HYTALE]: t("TXT_CODE_2025658e"),
-  [TYPE_WEB_SHELL]: t("TXT_CODE_31c5a4d0"),
-  [TYPE_TERRARIA]: t("TXT_CODE_f25df30a")
+  [TYPE_MINECRAFT_GEYSER]: t("TXT_CODE_4f57868")
 };
 
 interface Params {
@@ -358,7 +346,7 @@ export const INSTANCE_CONFIGS: InstanceConfigs[] = [
     info: t("TXT_CODE_25699fea"),
     path: "config.yml",
     redirect: "mcdr/config.yml",
-    category: [TYPE_MINECRAFT_JAVA, TYPE_MINECRAFT_MCDR]
+    category: [TYPE_MINECRAFT_JAVA]
   },
   {
     fileName: "[MCDR] permission.yml",
@@ -366,15 +354,7 @@ export const INSTANCE_CONFIGS: InstanceConfigs[] = [
     info: t("TXT_CODE_5207688f"),
     path: "permission.yml",
     redirect: "mcdr/permission.yml",
-    category: [TYPE_MINECRAFT_JAVA, TYPE_MINECRAFT_MCDR]
-  },
-  {
-    fileName: "[Tshock] config.json",
-    type: "json",
-    info: t("TXT_CODE_1cd8f9d2"),
-    path: "tshock/config.json",
-    redirect: "tshock/config.json",
-    category: [TYPE_TERRARIA]
+    category: [TYPE_MINECRAFT_JAVA]
   },
   {
     fileName: "[Forge] fml.toml",
@@ -412,22 +392,6 @@ export const INSTANCE_CONFIGS: InstanceConfigs[] = [
       TYPE_MINECRAFT_PURPUR,
       TYPE_MINECRAFT_LEAVES
     ]
-  },
-  {
-    fileName: "[Terraria] serverconfig.txt",
-    path: "serverconfig.txt",
-    redirect: "terraria/serverconfig.txt",
-    type: "properties_not_unicode",
-    info: t("TXT_CODE_TERRARIA_CONFIG_INFO"),
-    category: [TYPE_TERRARIA]
-  },
-  {
-    fileName: "[Hytale] config.json",
-    path: "config.json",
-    redirect: "hytale/config.json",
-    type: "json",
-    info: t("TXT_CODE_HYTALE_CONFIG_INFO"),
-    category: [TYPE_HYTALE]
   }
 ];
 

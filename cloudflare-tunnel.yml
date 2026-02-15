@@ -1,0 +1,18 @@
+# Cloudflare Tunnel Configuration for MCSManager
+#
+# Setup:
+# 1. cloudflared tunnel login
+# 2. cloudflared tunnel create mcsmanager
+# 3. Replace <TUNNEL-ID> below with your tunnel ID
+# 4. Run: cloudflared tunnel run mcsmanager
+
+tunnel: <TUNNEL-ID>
+credentials-file: C:\Users\ryash\.cloudflared\<TUNNEL-ID>.json
+
+ingress:
+  # Route all traffic to MCSManager Panel
+  - hostname: mcsmanager.yourdomain.com # Change this to your domain
+    service: http://localhost:23333
+
+  # Fallback rule (required)
+  - service: http_status:404

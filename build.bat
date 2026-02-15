@@ -25,6 +25,7 @@ mkdir "production-code"
 mkdir "production-code\daemon"
 mkdir "production-code\web"
 mkdir "production-code\web\public"
+mkdir "production-code\common"
 
 copy ".\daemon\production\app.js" ".\production-code\daemon\app.js"
 copy ".\daemon\production\app.js.map" ".\production-code\daemon\app.js.map"
@@ -36,6 +37,9 @@ copy ".\panel\production\app.js.map" ".\production-code\web\app.js.map"
 copy ".\panel\package.json" ".\production-code\web\package.json"
 copy ".\panel\package-lock.json" ".\production-code\web\package-lock.json"
 
+REM Copy common package (required dependency)
+xcopy ".\common" ".\production-code\common" /E /I /H /Y /EXCLUDE:build-exclude.txt
+
 xcopy ".\frontend\dist" ".\production-code\web\public" /E /I /H /Y
 
 rd /s /q ".\panel\production"
@@ -44,11 +48,20 @@ rd /s /q ".\daemon\dist"
 rd /s /q ".\panel\dist" 
 rd /s /q ".\frontend\dist" 
 
-cd "production-code\daemon"
+cd "production-code\common"
+call npm install --production
+cd "../daemon"
 call npm install --production
 cd "../web"
 call npm install --production
 cd "../../"
+
+echo "Fixing mcsmanager-common symlinks..."
+REM Remove junction points and copy actual files
+rd "production-code\daemon\node_modules\mcsmanager-common"
+rd "production-code\web\node_modules\mcsmanager-common"
+xcopy "production-code\common" "production-code\daemon\node_modules\mcsmanager-common" /E /I /H /Y
+xcopy "production-code\common" "production-code\web\node_modules\mcsmanager-common" /E /I /H /Y
 
 echo "------------"
 echo "Compilation completed!"
